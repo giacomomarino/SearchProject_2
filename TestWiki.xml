@@ -1,0 +1,43 @@
+<xml>
+    <page>
+        <title>
+            A
+        </title>
+        <id>
+            0
+        </id>
+        <text>
+                [A] [B] [C] dog
+        </text>
+    </page>
+
+    <page>
+        <title>
+            B
+        </title>
+        <id>
+            1
+        </id>
+        <text>
+            [A] [B] [C] president harry truman
+        </text>
+    </page>
+
+    <page>
+        <title>
+            C
+        </title>
+        <id>
+            2
+        </id>
+        <text>
+            [A]      [C] cat
+        </text>
+    </page>
+
+
+
+
+
+
+</xml>
