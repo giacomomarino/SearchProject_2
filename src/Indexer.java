@@ -189,42 +189,37 @@ public class Indexer extends Stemmer {
         HashMap<Integer, List<Double>> idToWeights = new HashMap<>();
         int numOfDocs = idListInt.size();
 
-
-
         for (Map.Entry<Integer, String> doc1 : idTitleHashmap.entrySet()) {
-
+                List<Integer> links;
                 List<Double> weights = new LinkedList<>();
-
+                links = idLinks.get(doc1.getKey()).stream().map(elem -> titleId.get(elem)).toList();
             for (Map.Entry<Integer, String> doc2 : idTitleHashmap.entrySet()) {
 
-                List<Integer> links;
 
-
-                links = idLinks.get(doc2.getKey()).stream().map(elem -> titleId.get(elem)).toList();
-
-                
-                if (Objects.equals(doc2.getKey(), doc1.getKey())) {
+                if (Objects.equals(doc1.getKey(), doc2.getKey())) {
 
                     weights.add(0.15/numOfDocs);
-                }   else if (links.contains(doc1.getKey())) {
 
-                    weights.add((0.15/numOfDocs) + (1 - 0.15)*(1/links.size()));
+                }   else if (links.contains(doc2.getKey())) {
+                    weights.add((0.15/numOfDocs) + (1 - 0.15)*(1.0/links.size()));
                 }   else if (links.isEmpty()) {
 
-                    weights.add((0.15/numOfDocs) + (1 - 0.15)*(1/(numOfDocs - 1)));
+                    weights.add((0.15/numOfDocs) + (1 - 0.15)*(1.0/(numOfDocs - 1)));
 
-                }   else {
+                }  else {
 
                     weights.add(0.15/numOfDocs);
                 }
 
 
             }
-
             idToWeights.put(doc1.getKey(),weights);
 
             }
 
+        // 1: .049, .475, .475
+        // 2: .475, .049, .475
+        // 3: .9, .049, .049
 
 
 
@@ -233,13 +228,16 @@ public class Indexer extends Stemmer {
 
 
 
+
+
+        /*
         for (Map.Entry<Integer, List<Double>> entry : idToWeights.entrySet()) {
 
             System.out.println((entry.getKey() + 1) + "::");
             for (int i = 0; i < entry.getValue().size(); i++) {
                 System.out.println(entry.getValue().get(i));
             }
-        }
+        }*/
 
 
         //calc ranks
@@ -254,11 +252,9 @@ public class Indexer extends Stemmer {
         Double[] primaryRanks = new Double[idToWeights.size()];
         Arrays.fill(primaryRanks, 1.0 / idToWeights.size());
 
-
         while (true) {
 
-            System.arraycopy(primaryRanks, 0, secondaryRanks, 0, primaryRanks.length);
-
+            System.arraycopy(primaryRanks, 0, secondaryRanks, 0, idToWeights.size());
 
             for (int j = 0; j < primaryRanks.length; j++) {
 
@@ -266,7 +262,7 @@ public class Indexer extends Stemmer {
 
                 for (int k = 0; k < primaryRanks.length; k++) {
 
-                    primaryRanks[j] += idToWeights.get(j).get(k) * secondaryRanks[k];
+                    primaryRanks[j] += idToWeights.get(k).get(j) * secondaryRanks[k];
                 }
             }
 
@@ -282,7 +278,6 @@ public class Indexer extends Stemmer {
             if (dist < check) {
                 break;
             }
-
         }
 
         HashMap<Integer, Double> documentRanks = new HashMap<>();

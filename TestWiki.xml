@@ -7,7 +7,7 @@
             0
         </id>
         <text>
-                [A] [B] [C] dog
+                [B] [C] dog
         </text>
     </page>
 
@@ -19,7 +19,7 @@
             1
         </id>
         <text>
-            [A] [B] [C] president harry truman
+            president harry truman
         </text>
     </page>
 
@@ -31,13 +31,8 @@
             2
         </id>
         <text>
-            [A]      [C] cat
+            [A] cat
         </text>
     </page>
-
-
-
-
-
 
 </xml>
